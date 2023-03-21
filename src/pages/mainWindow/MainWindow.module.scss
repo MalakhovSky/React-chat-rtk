@@ -1,0 +1,43 @@
+.container{
+  .window{
+    width: 70%;
+    height: 70vh;
+    overflow-y: auto;
+    margin: 0 auto;
+    border: 3px solid white;
+    border-radius: 10px;
+  }
+  input{
+
+    width:59%;
+    height: 40px;
+    overflow-y: auto;
+    margin-left: 15%;
+    margin-top: 10px;
+    border: 2px solid white;
+    border-radius: 10px;
+    background-color: #344040;
+    padding-left: 10px;
+    color: aliceblue;
+  }
+
+  a {
+    text-decoration: none;
+  }
+  .out {
+    margin: 10px;
+    font-size: 18px;
+    padding: 5px;
+    border: 2px solid black;
+    width: 150px;
+    height: 50px;
+    border-radius: 10px;
+    color: black;
+    background-color: #28c028;
+
+  }
+}
+
+
+
+

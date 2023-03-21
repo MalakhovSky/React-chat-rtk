@@ -1,25 +1,45 @@
-import logo from './logo.svg';
 import './App.css';
+import {LogScreen} from "./pages/logScreen/LogScreen";
+import {Route, Routes, Navigate} from "react-router-dom";
+import {MainWindow} from "./pages/mainWindow/MainWindow";
+import {useDispatch} from "react-redux";
+import {RegisterScreen} from "./pages/registerScreen/RegisterScreen";
+import {useAuth} from "./hooks/use-auth";
+
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const dispatch = useDispatch();
+    const {isAuth,email} = useAuth()
+
+
+
+
+    return isAuth ?
+        (
+            <div className='container'>
+                <Routes>
+                    <Route path='/mainWindow' element={<MainWindow/>}/>
+                    <Route
+                        path="*"
+                        element={<Navigate to="/mainWindow" replace />} //redirect
+                    />
+                </Routes>
+
+            </div>
+        ) : (
+            <div className='container'>
+                <Routes>
+                    <Route path='/logScreen' element={<LogScreen/>}/>
+                    <Route path='/registerScreen' element={<RegisterScreen/>}/>
+                    <Route
+                        path="*"
+                        element={<Navigate to="/logScreen" replace />}//redirect
+                    />
+                </Routes>
+
+            </div>
+        )
 }
 
 export default App;
