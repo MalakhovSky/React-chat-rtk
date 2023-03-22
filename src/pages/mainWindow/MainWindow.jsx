@@ -3,33 +3,60 @@ import {Link} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {useAuth} from "../../hooks/use-auth";
 import {removeUser} from "../../redux/features/user/userSlice";
-import {useState} from "react";
-import {useCollectionData} from "react-firebase-hooks/firestore";
+import {useEffect, useState} from "react";
 import { getFirestore } from "firebase/firestore";
+import {query,collection,orderBy,doc ,serverTimestamp,onSnapshot,addDoc} from 'firebase/firestore'
+import {db} from "../../firebase";
+import {Message} from "../../components/message/Message";
+
 
 
 
 export const MainWindow = () =>{
     const dispatch = useDispatch();
-    const {isAuth,email} = useAuth();
-    const [messageText, setMessageText] = useState('initState');
+    const {email,displayName,photoURL,id} = useAuth();
+    const [messageText, setMessageText] = useState('');
+    const [messages, setMessages] = useState([]);
 
 
+    const sendMessage = async (e) =>{
+        e.preventDefault()
+        await addDoc(collection(db, "messages"), {
+            uid:id,// положить и взять из логина гугла
+            displayName:displayName,// положить и взять из логина гугла
+            photoURL:photoURL, // положить и взять из логина гугла
+            text:messageText,
+            timestamp: serverTimestamp()
 
-    const [messages,loading] = useCollectionData(
-     getFirestore(app).collection('messages').orderBy('createdAt')
-    )
-
-    const sendMessage = async () =>{
-        getFirestore().collection('messages').add({
-            // uid:user.uid;// положить и взять из логина гугла
-            // displayName:user.displayName;// положить и взять из логина гугла
-            // photoURL:user.photoUrl; // положить и взять из логина гугла
-            // text:messageText,
-            // createdAt: firestore.FieldValue.serverTimestamp() // время серва
-        })
+        });
         setMessageText('')
     }
+
+
+
+    useEffect(()=>{
+        async function fetchData(){
+
+            const q = query(collection(db, "messages"),orderBy('timestamp'));
+            const unsubscribe = onSnapshot(q,(querySnapshot)=>{
+                let messages =[]
+                querySnapshot.forEach((doc) => {
+                    messages.push({...doc.data(),id: doc.id})
+                });
+                setMessages(messages)
+            })
+            return ()=> unsubscribe()
+
+        }
+        fetchData()
+
+    },[])
+
+    console.log(messages.timestamp,'messageges')
+
+
+
+
 
 
 
@@ -41,6 +68,12 @@ export const MainWindow = () =>{
             </div>
         </Link>
         <div className={style.window}>
+            {messages && messages.map((message)=>(
+                <Message
+                    key={message.id}
+                    message={message}/>
+                ))
+            }
 
         </div>
         <div>

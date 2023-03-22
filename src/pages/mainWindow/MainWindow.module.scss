@@ -6,9 +6,10 @@
     margin: 0 auto;
     border: 3px solid white;
     border-radius: 10px;
+
   }
   input{
-
+    word-break: break-all;
     width:59%;
     height: 40px;
     overflow-y: auto;

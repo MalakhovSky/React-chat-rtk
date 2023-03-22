@@ -25,7 +25,7 @@ export const LogScreen = () =>{
             .then(console.error)
     }
 
-    const loginGoole = () =>{
+    const loginGoogle = () =>{
         const provider = new GoogleAuthProvider();
         const auth = getAuth();
         signInWithPopup(auth, provider)
@@ -37,8 +37,11 @@ export const LogScreen = () =>{
                     email: user.email,
                     id: user.uid,
                     token: token,
+                    displayName:user.displayName,
+                    photoURL:user.photoURL,
+
                 }))
-                console.log(user)
+                console.log()
                 navigate('/')
             })
     }
@@ -59,7 +62,7 @@ export const LogScreen = () =>{
                     Войдите с помощью Google аккаунта
                 </div>
                 <div
-                    onClick={loginGoole}
+                    onClick={loginGoogle}
                     className={style.btn}>
                     Войти
                 </div>

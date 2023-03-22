@@ -19,6 +19,7 @@ export const RegisterScreen = () =>{
                     email: user.email,
                     id: user.uid,
                     token: user.accessToken,
+
                 }))
                 navigate('/')
             })
